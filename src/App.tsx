@@ -41,12 +41,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const getItems = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const data = await fetchItems(page, limit);
-        setItems([...items, ...data.items]);
+        console.log("Fetched data:", data); // Adicionado para depuração
+        setItems(data.items);
         setTotal(data.total);
         setLoading(false);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setError(error.message);
         setLoading(false);
@@ -54,17 +56,17 @@ const App: React.FC = () => {
     };
 
     getItems();
-  }, [limit]);
+  }, [page, limit]); // Adicione 'page' e 'limit' nas dependências
 
   const handlePreviousPage = () => {
     if (page > 1) {
-      setPage(page - 1);
+      setPage((prevPage) => prevPage - 1);
     }
   };
 
   const handleNextPage = () => {
     if (page * limit < total) {
-      setPage(page + 1);
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -80,13 +82,15 @@ const App: React.FC = () => {
     <div className="App">
       <h1>Item List</h1>
       <ul>
-        {items.map((item, key) => (
-          <li key={key}>
+        {items.map((item) => (
+          <li key={item.id}>
             <h2>{item.name}</h2>
             <p>{item.description}</p>
-            <p>
-              {item.price.coin} {item.price.value}
-            </p>
+            {!item.price ? (
+              <p>Price not available</p>
+            ) : (
+              <p> {item.price.coin} {item.price.value}</p>
+            )}
           </li>
         ))}
       </ul>
