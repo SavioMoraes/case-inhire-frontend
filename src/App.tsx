@@ -56,7 +56,7 @@ const App: React.FC = () => {
     };
 
     getItems();
-  }, [page, limit]); // Adicione 'page' e 'limit' nas dependências
+  }, [page, limit]); // Adicionado 'page' na dependência do useEffect
 
   const handlePreviousPage = () => {
     if (page > 1) {
