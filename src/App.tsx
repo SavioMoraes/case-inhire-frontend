@@ -70,6 +70,12 @@ const App: React.FC = () => {
     }
   };
 
+  const handlePageClick = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(total / limit);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -94,13 +100,25 @@ const App: React.FC = () => {
           </li>
         ))}
       </ul>
-      <div>
+      <div className="pagination">
         <button onClick={handlePreviousPage} disabled={page === 1}>
           Previous
         </button>
+        {[...Array(totalPages)].map((_, index) => (
+          <div
+            key={index}
+            className={`page-number ${page === index + 1 ? 'active' : ''}`}
+            onClick={() => handlePageClick(index + 1)}
+          >
+            {index + 1}
+          </div>
+        ))}
         <button onClick={handleNextPage} disabled={page * limit >= total}>
           Next
         </button>
+      </div>
+      <div className="current-page-indicator">
+        Página {page} de {totalPages}
       </div>
     </div>
   );
