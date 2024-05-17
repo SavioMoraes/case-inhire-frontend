@@ -9,6 +9,7 @@ interface Item {
     coin: "R$" | "$" | "€";
     value: number;
   };
+  status: string;
 }
 
 interface PaginatedData {
@@ -97,6 +98,7 @@ const App: React.FC = () => {
             ) : (
               <p> {item.price.coin} {item.price.value}</p>
             )}
+            <p>{item.status}</p>
           </li>
         ))}
       </ul>
